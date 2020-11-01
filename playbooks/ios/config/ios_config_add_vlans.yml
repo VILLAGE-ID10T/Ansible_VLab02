@@ -1,0 +1,14 @@
+---
+- name: Create an access-list
+  hosts: switches
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: access-list
+      ios_config:
+        lines:
+          - no access-list 180 permit tcp any any eq www
+#        provider: "{{ cli }}"
+#      register: access-list
+

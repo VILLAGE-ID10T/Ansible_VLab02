@@ -1,0 +1,11 @@
+---
+- connection: local
+  gather_facts: false
+  hosts: all  
+  tasks:
+    - name: Add the user 'johnd'
+      user:
+      name: johnd
+      state: Present
+      remove: no
+

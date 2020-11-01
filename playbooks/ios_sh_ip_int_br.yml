@@ -1,0 +1,31 @@
+---
+- name: show version
+  hosts: switches
+  gather_facts: false
+  connection: local
+ 
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+  connection: local
+  gather_facts: no
+#  vars_files:
+#    - '~/.virtualenvs/vlab_01/group_vars/all/vault.yml'
+#  vars:
+#    cli:
+#      password: "{{ ansible_ssh_user }}"
+#      username: "{{ ansible_ssh_pass }}"
+ 
+  tasks:
+    - name: show version
+      ios_command:
+        commands:
+          - show ip int br
+        provider: "{{ cli }}"
+      register: show_commands
+    - name: show output
+      debug:
+#        msg: "{{ show_commands }}"
+        msg: |-
+          {{ show_commands.stdout.0.split('
+          ') }}

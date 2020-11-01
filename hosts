@@ -1,0 +1,107 @@
+#[all:vars]
+#ansible_connection=network_cli
+#ansible_network_os=ios
+#ansible_ssh_user=jody
+#ansible_ssh_pass=jody
+#ansible_python_interpreter=/usr/bin/python3
+ 
+[all:children]
+switches
+routers
+nix_hosts
+web_servers
+win_hosts
+ 
+[switches:vars]
+include_vars= 'group_vars/all/vault.yml'
+#include_vars= "{{ ansible_ssh_pass }}"
+ansible_connection=network_cli
+ansible_network_os=ios
+#ansible_ssh_user= "{{ ssh_user }}"
+#ansible_ssh_user= "{{ ssh_pass }}"
+
+ 
+[switches]
+SWA-10
+SWA-20
+ 
+[routers:vars]
+include_vars= 'group_vars/all/vault.yml'
+#include_vars= "{{ ansible_ssh_pass }}"
+ansible_connection=network_cli
+ansible_network_os=ios
+#ansible_ssh_user= "{{ ssh_user }}"
+#ansible_ssh_user= "{{ ssh_pass }}"
+
+
+[routers]
+vRTR-11
+vRTR-12
+vRTR-13
+vRTR-14
+ 
+ 
+[web_servers:vars]
+#ansible_user='{{ nix_username }}'
+#ansible_become_pass='{{ nix_password }}'
+ansible_user='jjh'
+ansible_become_pass='jjh'
+ansible_become=yes
+ansible_become_method=sudo
+ 
+ 
+[web_servers]
+WEB-20
+ 
+[win_hosts:vars]
+#vars_files=group_vars/win/vault.yml
+#ansible_user='administrator@CORP.JODYSWORLD.INFO'
+#ansible_password='cvRT34#$'
+#ansible_port='22'
+ansible_connection=winrm
+ansible_winrm_server_cert_validation='ignore'
+#ansible_winrm_scheme='https'
+#ansible_winrm_transport=winrm
+ansible_user= "{{ ansible_user }}"
+ansible_password= "{{ ansible_password }}"
+win_ansible_connection=winrm
+win_ansible_winrm_server_cert_validation='ignore'
+
+
+
+[win_hosts]
+dc-30
+win-101
+win-100
+win12-31 
+ 
+[nix_hosts:vars]
+ansible_user='{{ nix_username }}'
+ansible_become=yes
+ansible_become_method=sudo
+ansible_become_pass='{{ nix_password }}'
+ 
+[nix_hosts]
+WEB-20
+ 
+ 
+[site_1:children]
+site_1_switches
+site_1_routers
+site_1_hosts
+ 
+[site_1_switches]
+SWA-10
+SWA-20
+ 
+[site_1_routers]
+vRTR-11
+vRTR-12
+ 
+[site_1_hosts]
+WEB-20
+ 
+[site_2]
+SWA-20
+#SWA-11
+SWA-10

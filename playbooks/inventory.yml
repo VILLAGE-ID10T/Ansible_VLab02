@@ -1,0 +1,25 @@
+---
+  - name: Inventory Routers and Switches and Build CSV for MyDevices.csv
+    hosts: all
+    gather_facts: no
+    connection: local
+
+    tasks:
+      - ios_facts:
+          gather_subset:
+              - config
+
+      - name: Bundle data in a new hash, but only if Serial is not blank.
+        set_fact:
+         inventory: "{{ inventory|default([]) + [ {'hostname': ansible_net_hostname, 'ip': inventory_hostname, 'name': item.descr, 'serial': item.sn, 'version': ansible_net_version } ] }}"
+#        with_items: "{{ results.response }}"
+#        when: item.sn != ''
+
+      #- name: Debug Check if you want
+      #  debug: var=inventory
+
+      # Write Headers for Cisco My Devices - hostname,IP,ProductID,serial
+      - name: Write mydevices.csv
+        run_once: true
+        shell: echo Serial Number,Device Name,Tags,Notes > mydevices.csv
+        with_items: "{{ inventory }}"

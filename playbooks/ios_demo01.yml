@@ -1,0 +1,16 @@
+--- 
+- name: show version
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: IOS CONFIG 1a
+      register: output
+      ios_config:
+        lines:
+          - ip domain name bogus.com
+          - ip name-server 10.1.1.101
+          - no ip name-server 8.8.4.4
+          - no ntp server 130.126.24.24
+          - no ip cef
+    - debug: var=output

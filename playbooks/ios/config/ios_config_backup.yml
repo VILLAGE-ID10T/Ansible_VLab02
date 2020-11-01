@@ -1,0 +1,32 @@
+---
+- name: IOS Backup
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  tasks:
+    
+    - name: IOS >> Save Configuration to NVRAM
+      ios_config:
+        save_when: always
+      register: output
+
+    - name: BACKUP THE CONFIG
+      ios_config:
+        backup: yes
+      register: config_output
+
+    - name: timestamp
+      command: date +%Y-%m-%d@%H:%M:%S
+      register: timestamp
+
+    - name: RENAME BACKUP
+      copy:
+        src: "{{config_output.backup_path}}"
+        dest: "./backup/{{ inventory_hostname }}_{{ timestamp.stdout }}.config"
+
+#    - name: REMOVE NON CONFIG LINES
+#      lineinfile:
+#        path: "./backup/{{ timestamp }}_{{inventory_hostname}}.config"
+#        line: "Building configuration..."
+#        state: absent

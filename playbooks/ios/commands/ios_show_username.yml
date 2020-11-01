@@ -1,0 +1,13 @@
+- connection: local
+  gather_facts: false
+  hosts: all
+  name: 'show run'
+  tasks:
+    - ios_command:
+        commands:
+          - 'show run'
+      register: show_commands
+    - debug:
+        msg: |-
+          {{ show_commands.stdout.0.split('
+          ') }}

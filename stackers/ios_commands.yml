@@ -1,0 +1,39 @@
+---
+- name: IOS Show Commands
+  hosts: all
+  gather_facts: false
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: commands
+      register: commands
+      ios_command:
+         commands:
+          - show run
+          - ping 255.255.255.255
+          - sh run | i route
+          - sh run | i user
+
+    - debug: var=commands.stdout_lines
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.0.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.1.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.2.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.3.split('
+          ') }}
+

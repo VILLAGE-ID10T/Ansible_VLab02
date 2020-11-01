@@ -1,0 +1,11 @@
+---
+- name: Create an access-list
+  hosts: switches
+  gather_facts: false
+  connection: local
+
+  tasks:
+    - name: IOS Hardening
+      ios_config:
+        src: /root/.virtualenvs/vlab_02/hardening/ios_switches.cfg
+

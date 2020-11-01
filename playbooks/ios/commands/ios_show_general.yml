@@ -1,0 +1,42 @@
+---
+- name: show version
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+
+  tasks:
+    - name: commands
+      register: commands
+      ios_command:
+         commands:
+          - show ip int br
+          - show run | i hostname
+          - ping 255.255.255.255
+          - show hist
+
+    - debug: var=commands.stdout_lines
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.0.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.1.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.2.split('
+          ') }}
+
+    - debug:
+        msg: |-
+          {{ commands.stdout.3.split('
+          ') }}
+

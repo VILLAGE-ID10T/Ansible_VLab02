@@ -1,0 +1,28 @@
+--
+- name: IOS SSH CIS
+  hosts: all
+  gather_facts: false
+  connection: local
+  gather_facts: no
+
+    - name: SSH ACL
+      ios_config:
+        lines:
+          - permit tcp any any eq 22 log
+        parents: ip access-list extended SSH_IN
+        match: exact
+
+    - name: SSH TRANSPORT INPUT
+      ios_config:
+        lines:
+          - line vty 0 15
+          - transport input ssh
+          - no exec-timeout
+
+
+    - name: SSH ACCESS-CLASS
+      ios_config:
+        lines:
+          -  access-class SSH_IN in
+        parents: line vty 0 15
+        match: exact

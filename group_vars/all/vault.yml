@@ -1,0 +1,19 @@
+---
+#username: jody
+#password: jody
+ansible_ssh_user: jody
+ansible_ssh_pass: jody
+ansible_sudo_pass: jody
+
+ansible_python_interpreter: '/usr/bin/python3'
+# switches
+#username: jody
+#password: jody
+#ssh_user: jody
+#ssh_pass: jody
+#ansible_sudo_pass: jody
+
+# win_hosts
+ansible_user: administrator@CORP.JODYSWORLD.INFO
+ansible_password: cvRT34#$
+
